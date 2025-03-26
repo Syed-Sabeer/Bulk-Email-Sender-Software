@@ -20,26 +20,35 @@ if not os.path.exists(file_path):
 # Load Excel File
 df = pd.read_excel(file_path)
 
-# Dictionary for common domain corrections
+# Dictionary for domain corrections
 domain_corrections = {
     "samec": "samechemicals.com",
     "pure-chemical": "pure-chemical.com",
     "pqchemicals": "pqchemicals.com",
-    "jkenterprises": "jkenterprises.com"
+    "jkenterprises": "jkenterprises.com",
+    "lotus-corp": "lotus-corp.in",
+    "adpolyurethanes": "adpolyurethanes.com",
+    "greenbergenterprisegrou": "greenbergenterprisegroup.com"
 }
 
 # Function to clean and validate emails
 def clean_email(email):
     if isinstance(email, str):
         email = re.sub(r"\s+", "", email)  # Remove spaces
-        email = re.sub(r"[©#&*^_]", "@", email)  # Replace special symbols with '@'
-        
+        email = re.sub(r"[©,;:#&*^]", "@", email)  # Replace special symbols with '@'
+        email = re.sub(r"_{2,}", "_", email)  # Reduce multiple underscores
+        email = re.sub(r"@+", "@", email)  # Avoid multiple @ symbols
+
+        # Fix common domain errors
         for key, corrected_domain in domain_corrections.items():
             if key in email:
                 email = re.sub(rf"{key}.*", corrected_domain, email)
 
-        email = re.sub(r"(@[a-zA-Z0-9.-]*chemicals)(?!\.com)", r"\1.com", email)
+        # Ensure emails have a proper domain
+        if "@" in email and "." not in email.split("@")[-1]:  # If domain is missing
+            email += ".com"  # Assume '.com' if missing
 
+        # Validate email pattern
         match = re.search(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}", email)
         return match.group(0) if match else None
     return None
@@ -119,7 +128,7 @@ try:
                 f.write(email + "\n")
 
             # **Delay to prevent spam detection**
-            wait_time = random.uniform(10, 15)  # Random delay between 10 to 30 seconds
+            wait_time = random.uniform(10, 15)  # Random delay between 10 to 15 seconds
             print(f"Waiting {wait_time:.2f} seconds before sending the next email... ")
             time.sleep(wait_time)
 
