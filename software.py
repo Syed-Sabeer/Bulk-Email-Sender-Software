@@ -64,7 +64,7 @@ SMTP_HOST = "smtp.gmail.com"
 SMTP_PORT = 587
 
 # Image Paths
-images = ["p1.jpg", "p2.jpg"]
+images = ["p3.jpeg", "p2.jpg"]
 
 # Check if images exist
 for img in images:
@@ -119,8 +119,8 @@ try:
                 f.write(email + "\n")
 
             # **Delay to prevent spam detection**
-            wait_time = random.uniform(10, 20)  # Random delay between 10 to 30 seconds
-            print(f"Waiting {wait_time:.2f} seconds before sending the next email...")
+            wait_time = random.uniform(10, 15)  # Random delay between 10 to 30 seconds
+            print(f"Waiting {wait_time:.2f} seconds before sending the next email... ")
             time.sleep(wait_time)
 
             # **Batch processing** - Reconnect after every 10 emails
