@@ -69,6 +69,7 @@ df = df[~df["Cleaned Email"].isin(sent_emails)]
 # SMTP Configuration
 SMTP_USER = "nayachemicalseo@gmail.com"
 SMTP_PASSWORD = "okjmjdfymebfkwjb"
+SMTP_PASSWORD = "okjmjdfymebfkwjb"
 SMTP_HOST = "smtp.gmail.com"
 SMTP_PORT = 587
 
